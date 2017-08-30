@@ -409,13 +409,19 @@
       - RHEL-07-020040
 
 - name: "MEDIUM | RHEL-07-020100 | PATCH | USB mass storage must be disabled."
-  command: "true"
+  lineinfile:
+      create: yes
+      regexp: '^#?install usb-storage /bin/true'
+      path: /etc/modprobe.d/nousbstorage
+      line: 'install usb-storage /bin/true'
+  when: not rhel_07_020100_audit.matched
   tags:
       - cat2
       - medium
       - patch
       - RHEL-07-020100
-
+      - usb
+         
 - name: "MEDIUM | RHEL-07-020110 | PATCH | File system automounter must be disabled unless required."
   systemd:
       name: autofs
@@ -429,12 +435,16 @@
       - autofs
 
 - name: "MEDIUM | RHEL-07-020240 | PATCH | The operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files."
-  command: "true"
+  lineinfile:
+      dest: /etc/login.defs
+      regexp: '^#?UMASK'
+      line: "UMASK 077"
   tags:
       - cat2
       - medium
       - patch
       - RHEL-07-020240
+      - logindefs
 
 - name: "MEDIUM | RHEL-07-020260 | PATCH | Vendor packaged system security patches and updates must be installed and up to date."
   command: "true"
@@ -732,6 +742,7 @@
       regexp: '^#?network_failure_action'
       line: "network_failure_action = {{ rhel7stig_network_failure_action }}"
   when: rhel_07_030321_audit.stat.exists
+  notify: restart auditd
   tags:
       - cat2
       - medium
@@ -1883,4 +1894,3 @@
       - medium
       - patch
       - RHEL-07-031010
-
