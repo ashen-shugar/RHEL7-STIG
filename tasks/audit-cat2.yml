@@ -174,7 +174,7 @@
 
 - name: |
     MEDIUM | RHEL-07-030871 | AUDIT | The operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/group.
-    MEDIUM | RHEL-07-030872 | PATCH | The operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/gshadow.
+    MEDIUM | RHEL-07-030872 | AUDIT | The operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/gshadow.
     MEDIUM | RHEL-07-030874 | AUDIT | The operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/opasswd.
   stat:
       path: "{{ item }}"
